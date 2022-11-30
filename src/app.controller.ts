@@ -1,38 +1,38 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { AppService } from './app.service';
 
-interface Persona {
-  nombre: string,
-  apellido: string,
-  edad: number
+interface Moto {
+  marca: string,
+  precio: number,
+  anio: number
 }
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  private personas : Persona[] = [{
-    nombre: "Leo",
-    apellido: "Messi",
-    edad: 35
+  private Motos : Moto[] = [{
+    marca: "Honda Xr",
+    precio: 19000000,
+    anio: 2019
   }]
 
   @Get()
-  getHello(): Persona[] {
-    return this.personas;
+  getHello(): Moto[] {
+    return this.Motos;
   }
 
   @Post()
-  crear(@Body() datos: Persona): Persona {
-    this.personas.push(datos);
+  crear(@Body() datos: Moto): Moto {
+    this.Motos.push(datos);
     return datos;
   }
 
   @Put(":id")
-  modificar(@Body() datos: Persona, @Param('id') id: number): Persona | string {
+  modificar(@Body() datos: Moto, @Param('id') id: number): Moto | string {
     try{
-    this.personas[id] = datos
-    return this.personas[id];
+    this.Motos[id] = datos
+    return this.Motos[id];
     }
     catch{
       return `No fue posible modificar al usuario en la posición ${id}`
@@ -42,7 +42,7 @@ export class AppController {
   @Delete(":id")
   eliminar(@Param('id') id: number){
     try{
-      this.personas = this.personas.filter((val, index) => index != id);
+      this.Motos = this.Motos.filter((val, index) => index != id);
       return true;
     }
     catch{
@@ -50,11 +50,11 @@ export class AppController {
     }
   }
 
-  @Patch(":id/edad/:edad")
-  cambiarEdad(@Param('id') id: number, @Param('edad') edad: number): Persona | string{
+  @Patch(":id/anio/:anio")
+  cambiarEdad(@Param('id') id: number, @Param('anio') anio: number): Moto | string{
     try{
-      this.personas[id].edad = edad;
-      return this.personas[id];
+      this.Motos[id].anio = anio;
+      return this.Motos[id];
     }
     catch{
       return `No fue posible modificar al usuario en la posición ${id}`
