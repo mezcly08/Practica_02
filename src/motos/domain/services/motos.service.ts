@@ -1,44 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { Motos } from '../models/motos.model';
+import { Motos } from "../models/motos.model";
 
-@Injectable()
-export class MotosService {
+export interface MotosService {
 
-  private moto: Motos[] = [{
-    marca: 'Vespa Gts 300',
-    precio: 17000000,
-    anio: 2015,
-    team: 'Colombia'
-  }]
+   /**
+    * Retorna la lista de Motos
+    */
+   listar(): Motos[];
 
-  public listar() : Motos[] {
-    return this.moto
-  }
+   /**
+    * Crea una nueva moto
+    * @param Motos datos del nuevo jugador
+    * @return Nuevo jugador
+    */
+   crear(Motos: Motos): Motos;
 
-  public crear(motico: Motos): Motos {
-    this.moto.push(motico);
-    return motico;
-  }
+   /**
+    * Actualiza datos de jugador
+    * @param id Identificador único del jugador
+    * @param Motos datos del jugador
+    * @return Jugador modificado
+    */
+   modificar(id: number, Motos: Motos): Motos
 
-  public modificar(id: number, motico: Motos): Motos {
-      this.moto[id] = motico
-      return this.moto[id];
-  }
+   /**
+    * Eliminar un jugador
+    * @param id Identificador único del jugador
+    * @return True si eliminó al jugador
+    */
+   eliminar(id: number): boolean
 
-  public eliminar(id: number): boolean {
-    const totalMotosAntes = this.moto.length;
-    this.moto = this.moto.filter((val, index) => index != id);
-    if(totalMotosAntes == this.moto.length){
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-
-   public cambiarAnio(id: number, anio: number): Motos {
-      this.moto[id].anio = anio;
-      return this.moto[id];
-   }
-
+   /**
+    * Cambia la edad de un jugador
+    * @param id Identificador único del jugador
+    * @param age nuevo valor de edad 
+    */
+   cambiarAnio(id: number, age: number): Motos
 }

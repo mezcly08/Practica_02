@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
-import { MotosController } from './motos/adapters/controllers/motos.controller';
-import { MotosService } from './motos/domain/services/motos.service';
+import { MotosControllerImpl } from './motos/adapters/controllers/motosImpl.controller';
+import { MotosServiceImpl } from './motos/domain/services/motosImpl.service';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [],
-  controllers: [MotosController],
-  providers: [MotosService],
+  imports: [AuthModule, UsersModule],
+  controllers: [MotosControllerImpl],
+  providers: [
+    {
+      provide: 'MotosService',
+      useClass: MotosServiceImpl
+    }
+  ],
 })
 export class AppModule {}

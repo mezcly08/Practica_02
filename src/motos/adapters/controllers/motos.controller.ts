@@ -1,66 +1,35 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
-import { MotosService } from '../../domain/services/motos.service';
-
 import {Motos} from '../../domain/models/motos.model';
 
-const errReturn = (e: Error, message: string) => {
-  return {
-    message: message,
-    error: e
-  }
-}
+export interface MotosController {
+   /**
+    *  Retorna la lista de motos
+    */
+   listarMotos();
 
-@Controller()
-export class MotosController {
-  constructor(private readonly motoService: MotosService) { }
+   /**
+    * Crea un moto
+    * @param datos Objeto con datos de moto
+    */
+   crear(datos: Motos);
 
-  @Get()
-  getHello() {
-    try{
-      return this.motoService.listar();
-    }
-    catch(e){
-      return errReturn(e, "Error al listar de motos");
-    }
-  }
+   /**
+    * Modifica datos de un moto
+    * @param datos Objeto con datos de la moto
+    * @param id Identificador único de la moto
+    */
+   modificar(datos: Motos, id: number);
 
-  @Post()
-  crear(@Body() datos: Motos) {
-    try{
-      return this.motoService.crear(datos);
-    }
-    catch(e){
-      return errReturn(e, "Error al crear Motocicleta");
-    }
-  }
+   /**
+    * Elimina un moto
+    * @param id Identificador único de la moto
+    */
+   eliminar(id: number);
 
-  @Put(":id")
-  modificar(@Body() datos: Motos, @Param('id') id: number) {
-    try{
-      return this.motoService.modificar(id, datos);
-    }
-    catch(e){
-      return errReturn(e, "Error al modificar Motocicleta");
-    }
-  }
+   /**
+    * Cambia el anio de una moto
+    * @param id Identificador único de la moto
+    * @param anio año de la moto
+    */
+   cambiarEdad(id: number, anio: number);
 
-  @Delete(":id")
-  eliminar(@Param('id') id: number) {
-    try{
-      return this.motoService.eliminar(id);
-    }
-    catch(e){
-      return errReturn(e, "Error al eliminar Motocicleta");
-    }
-  }
-
-  @Patch(":id/anio/:anio")
-  cambiarEdad(@Param('id') id: number, @Param('anio') anio: number) {
-    try{
-      return this.motoService.cambiarAnio(id, anio);
-    }
-    catch(e){
-      return errReturn(e, "Error al modificar anio de la motocicleta");
-    }
-  }
 }
