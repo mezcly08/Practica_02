@@ -4,6 +4,7 @@ import { MotosService } from '../../domain/services/motos.service';
 import { Motos } from '../../domain/models/motos.model';
 import { MotosController } from './motos.controller';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 const errReturn = (e: Error, message: string) => {
   return {
@@ -26,7 +27,7 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Post()
   crear(@Body() datos: Motos) {
     try{
@@ -37,6 +38,7 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
+  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Put(":id")
   modificar(@Body() datos: Motos, @Param('id') id: number) {
     try{
@@ -47,6 +49,7 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
+  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Delete(":id")
   eliminar(@Param('id') id: number) {
     try{
@@ -57,6 +60,7 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
+  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Patch(":id/anio/:anio")
   cambiarEdad(@Param('id') id: number, @Param('anio') anio: number) {
     try{
