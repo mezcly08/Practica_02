@@ -11,13 +11,13 @@ import { MotosEntity } from './motos/domain/entities/motos.entity';
     AuthModule,
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url: 'mongodb+srv://mezcly08:mezcly08@cluster0.gc3de9t.mongodb.net/?retryWrites=true&w=majority',
+      url: 'mongodb+srv://mezcly08:gqqoyGVykA8zfS3N@cluster0.gc3de9t.mongodb.net/?retryWrites=true&w=majority',
       useNewUrlParser: true,
       useUnifiedTopology: true,
       synchronize: true, // Solo para desarrollo
       logging: true,
       autoLoadEntities: true,
-      ssl: true,
+      //ssl: true,
     }),
     TypeOrmModule.forFeature([MotosEntity]),
     UsersModule,
