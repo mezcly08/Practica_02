@@ -1,4 +1,4 @@
-import {Motos} from '../../domain/models/motos.model';
+import { MotosEntity } from 'src/motos/domain/entities/motos.entity';
 
 export interface MotosController {
    /**
@@ -10,14 +10,14 @@ export interface MotosController {
     * Crea un moto
     * @param datos Objeto con datos de moto
     */
-   crear(datos: Motos);
+   crear(datos: MotosEntity);
 
    /**
     * Modifica datos de un moto
     * @param datos Objeto con datos de la moto
     * @param id Identificador único de la moto
     */
-   modificar(datos: Motos, id: number);
+   modificar(datos: MotosEntity, id: number);
 
    /**
     * Elimina un moto

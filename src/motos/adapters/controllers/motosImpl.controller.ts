@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { MotosService } from '../../domain/services/motos.service';
 
-import { Motos } from '../../domain/models/motos.model';
+import { MotosEntity } from 'src/motos/domain/entities/motos.entity';
 import { MotosController } from './motos.controller';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -15,7 +15,7 @@ const errReturn = (e: Error, message: string) => {
 
 @Controller()
 export class MotosControllerImpl implements MotosController {
-  constructor(@Inject('MotosService') private readonly motoService: MotosService) { }
+  constructor(@Inject('MotosService') private readonly motoService: MotosService,) { }
 
   @Get()
   listarMotos() {
@@ -27,9 +27,8 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
-  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Post()
-  crear(@Body() datos: Motos) {
+  crear(@Body() datos: MotosEntity) {
     try{
       return this.motoService.crear(datos);
     }
@@ -38,9 +37,9 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
-  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
+  
   @Put(":id")
-  modificar(@Body() datos: Motos, @Param('id') id: number) {
+  modificar(@Body() datos: MotosEntity, @Param('id') id: number) {
     try{
       return this.motoService.modificar(id, datos);
     }
@@ -49,7 +48,6 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
-  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Delete(":id")
   eliminar(@Param('id') id: number) {
     try{
@@ -60,7 +58,6 @@ export class MotosControllerImpl implements MotosController {
     }
   }
 
-  @UseGuards(JwtAuthGuard) // Se adiciona esta anotación para proteger el endpoint
   @Patch(":id/anio/:anio")
   cambiarEdad(@Param('id') id: number, @Param('anio') anio: number) {
     try{

@@ -1,46 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { Motos } from '../models/motos.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { InsertResult, MongoRepository, UpdateResult } from 'typeorm';
+import { MotosEntity } from '../entities/motos.entity';
 import { MotosService } from './motos.service';
 
 
 @Injectable()
 export class MotosServiceImpl implements MotosService {
 
-  private moto: Motos[] = [{
-    marca: 'Vespa Gts 300',
-    precio: 17000000,
-    anio: 2015,
-    team: 'Colombia'
-  }]
+  constructor(
+    @InjectRepository(MotosEntity)
+    private readonly repository: MongoRepository<MotosEntity>,
+  ) {}
 
-  public listar() : Motos[] {
-    return this.moto
+  public async listar() : Promise<MotosEntity[]> {
+    return await this.repository.find();
   }
 
-  public crear(motico: Motos): Motos {
-    this.moto.push(motico);
-    return motico;
+  public async crear(MotoData: MotosEntity): Promise<InsertResult> {
+    const newMoto = await this.repository.insert(MotoData);
+    return newMoto;
   }
 
-  public modificar(id: number, motico: Motos): Motos {
-      this.moto[id] = motico
-      return this.moto[id];
+  public async modificar(id: number,motoData: MotosEntity,
+  ): Promise<UpdateResult> {
+    const updatedMotos = await this.repository.update(id, motoData);
+    return updatedMotos;
   }
 
-  public eliminar(id: number): boolean {
-    const totalMotosAntes = this.moto.length;
-    this.moto = this.moto.filter((val, index) => index != id);
-    if(totalMotosAntes == this.moto.length){
-      return false;
-    }
-    else{
-      return true;
-    }
+  public async eliminar(id: number): Promise<boolean> {
+    const deleteResult = await this.repository.delete(id);
+    return deleteResult.affected > 0;
   }
 
-   public cambiarAnio(id: number, anio: number): Motos {
-      this.moto[id].anio = anio;
-      return this.moto[id];
-   }
+   public async cambiarAnio(id: number, anio: number): Promise<UpdateResult> {
+    const updatedMotos = await this.repository.update(id, { anio: anio });
+    return updatedMotos;
+  }
 
 }
